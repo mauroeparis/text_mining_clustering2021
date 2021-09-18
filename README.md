@@ -27,3 +27,5 @@ El proyecto fué creado utilizando VS Code + [Su extención de Python](https://c
 Y si corremos ambas celdas utilizando el botón de _"Run Cell"_, obtenemos lo siguiente en una nueva pestaña:
 
 <img width="857" alt="imagen" src="https://user-images.githubusercontent.com/13922772/133910869-7d602cfe-eaca-43c4-b481-571c7478274e.png">
+
+Utilizamos este método ya que brinda mejor claridad al momento de trabajar con el versionado del proyecto. 
