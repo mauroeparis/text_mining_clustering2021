@@ -1,4 +1,6 @@
 venv/
+.tabnine.model
+.ipynb_checkpoints/*
 lavoztextodump.txt
 lavoztextodump.txt.tar.gz
 .DS_Store
