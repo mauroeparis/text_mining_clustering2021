@@ -34,7 +34,7 @@ pip install -r requirements.txt
 
 ## Informe
 
-Nosotros decidimos trabajar sobre el dataset de LaVoz y como primer paso hicimos un análisis utilizando como feature los atriburos `POS`, `Tag` y `Dep` de los tokens dentro del cuerpo. Estas son características mayormente morfológicas de las palabras y se pueden ver ejemplos en [la documentación de spacy de linguistic features](https://spacy.io/usage/linguistic-features).
+Nosotros decidimos trabajar sobre el dataset de LaVoz y como primer paso hicimos un análisis utilizando como feature los atriburos `POS`, `Tag` y `Dep` de los tokens dentro del cuerpo. Estas son características mayormente morfológicas de las palabras y se pueden ver ejemplos en [la documentación de spacy de linguistic features](https://spacy.io/usage/linguistic-features). Para poder generar los clusters utilizamos KMeans con 100 clusters.
 
 <img width="1015" alt="imagen" src="https://user-images.githubusercontent.com/13922772/134432149-59ab1e17-2013-4987-b613-cfd7a7bb3df1.png">
 
