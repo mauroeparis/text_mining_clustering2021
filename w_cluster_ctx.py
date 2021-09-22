@@ -77,7 +77,6 @@ for doc in articles_doc_bin.get_docs(nlp.vocab):
                 "POS__" + token.pos_,
                 "DEP__" + token.dep_,
                 "TAG__" + token.tag_,
-                "LEMM_" + token.lemma_,
             ]
             for f in features:
                 # si la feature está definida y sumar uno
@@ -95,18 +94,18 @@ for doc in articles_doc_bin.get_docs(nlp.vocab):
                     word_feature_dict[r_lemm] = word_feature_dict.get(
                         r_lemm, 0) + 1
 
-            left_ts = [t for t in token.lefts]
-            if left_ts:
-                left_t = left_ts[-1]
-                if not left_t.is_punct and not left_t.is_stop:
-                    if left_t.is_alpha:
-                        l_lemm = left_t.lemma_.split(" ")[0]
-                        word_feature_dict[l_lemm] = word_feature_dict.get(
-                            l_lemm, 0) + 1
-                    else:
-                        l_lemm = "NUM__"
-                        word_feature_dict[l_lemm] = word_feature_dict.get(
-                            l_lemm, 0) + 1
+            # left_ts = [t for t in token.lefts]
+            # if left_ts:
+            #     left_t = left_ts[-1]
+            #     if not left_t.is_punct and not left_t.is_stop:
+            #         if left_t.is_alpha:
+            #             l_lemm = left_t.lemma_.split(" ")[0]
+            #             word_feature_dict[l_lemm] = word_feature_dict.get(
+            #                 l_lemm, 0) + 1
+            #         else:
+            #             l_lemm = "NUM__"
+            #             word_feature_dict[l_lemm] = word_feature_dict.get(
+            #                 l_lemm, 0) + 1
             
             words_feature_dict[w_lemma] = word_feature_dict
 
