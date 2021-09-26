@@ -16,6 +16,14 @@ from tqdm import tqdm
 
 
 nlp = spacy.load("es_core_news_sm")
+nlp.Defaults.stop_words.add("e")
+nlp.Defaults.stop_words.add("y")
+nlp.Defaults.stop_words.add("a")
+nlp.Defaults.stop_words.add("o")
+nlp.Defaults.stop_words.add("u")
+nlp.Defaults.stop_words.add("o")
+nlp.Defaults.stop_words.add("etcétera")
+nlp.Defaults.stop_words.add("etc")
 
 
 DATASET_PATH = "./lavoztextodump.txt"
@@ -77,6 +85,9 @@ for doc in articles_doc_bin.get_docs(nlp.vocab):
                 "POS__" + token.pos_,
                 "DEP__" + token.dep_,
                 "TAG__" + token.tag_,
+                "LEMM_" + w_lemma,
+                "HEAD_" + token.head.lemma_.split(" ")[0],
+                "count",
             ]
             for f in features:
                 # si la feature está definida y sumar uno
@@ -87,29 +98,38 @@ for doc in articles_doc_bin.get_docs(nlp.vocab):
             if right_t and not right_t.is_punct and not right_t.is_stop:
                 if right_t.is_alpha:
                     r_lemm = right_t.lemma_.split(" ")[0]
-                    word_feature_dict[r_lemm] = word_feature_dict.get(
-                        r_lemm, 0) + 1
+                    feat_name = "RLEM_" + r_lemm
+                    word_feature_dict[feat_name] = word_feature_dict.get(
+                        feat_name, 0) + 1
                 else:
                     r_lemm = "NUM__"
                     word_feature_dict[r_lemm] = word_feature_dict.get(
                         r_lemm, 0) + 1
 
-            # left_ts = [t for t in token.lefts]
-            # if left_ts:
-            #     left_t = left_ts[-1]
-            #     if not left_t.is_punct and not left_t.is_stop:
-            #         if left_t.is_alpha:
-            #             l_lemm = left_t.lemma_.split(" ")[0]
-            #             word_feature_dict[l_lemm] = word_feature_dict.get(
-            #                 l_lemm, 0) + 1
-            #         else:
-            #             l_lemm = "NUM__"
-            #             word_feature_dict[l_lemm] = word_feature_dict.get(
-            #                 l_lemm, 0) + 1
+            left_ts = [t for t in token.lefts]
+            if left_ts:
+                left_t = left_ts[-1]
+                if not left_t.is_punct and not left_t.is_stop:
+                    if left_t.is_alpha:
+                        l_lemm = left_t.lemma_.split(" ")[0]
+                        feat_name = "LLEM_" + l_lemm
+                        word_feature_dict[feat_name] = word_feature_dict.get(
+                            feat_name, 0) + 1
+                    else:
+                        l_lemm = "NUM__"
+                        word_feature_dict[l_lemm] = word_feature_dict.get(
+                            l_lemm, 0) + 1
             
             words_feature_dict[w_lemma] = word_feature_dict
 
     word_feature_dict_progress_bar.update()
+# %%
+filtered_words_feature_dict = dict()
+
+for w, f in words_feature_dict.items():
+    if f["count"] > 70:
+        f.pop("count")
+        filtered_words_feature_dict[w] = f
 
 # %%
 # Crear lista con las features de cada token y
@@ -118,11 +138,11 @@ for doc in articles_doc_bin.get_docs(nlp.vocab):
 words_feature_list = []
 words_ids = {}
 wid = 0
-for word in words_feature_dict:
+for word in filtered_words_feature_dict:
     if len(word) > 0:
         words_ids[word] = wid
         wid += 1
-        words_feature_list.append(words_feature_dict[word])
+        words_feature_list.append(filtered_words_feature_dict[word])
 
 # %%
 # Utilizar DictVectorizer para crear una matriz "scipy.sparse"
@@ -169,7 +189,7 @@ fig_matrix = px.scatter(pointsspacy, x="x", y="y", hover_data=['word'])
 fig_matrix.show()
 # %%
 # Utilizamos Kmeans para crear clusters de palabras
-kmeans = KMeans(n_clusters=100).fit(red_matrix)
+kmeans = KMeans(n_clusters=6).fit(red_matrix)
 
 # %%
 # Creamos un DataFrame que contiene el token, las posiciones x e y y 

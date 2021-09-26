@@ -16,6 +16,14 @@ from tqdm import tqdm
 
 
 nlp = spacy.load("es_core_news_sm")
+nlp.Defaults.stop_words.add("e")
+nlp.Defaults.stop_words.add("y")
+nlp.Defaults.stop_words.add("a")
+nlp.Defaults.stop_words.add("o")
+nlp.Defaults.stop_words.add("u")
+nlp.Defaults.stop_words.add("o")
+nlp.Defaults.stop_words.add("etcétera")
+nlp.Defaults.stop_words.add("etc")
 
 
 DATASET_PATH = "./lavoztextodump.txt"
@@ -77,15 +85,25 @@ for doc in articles_doc_bin.get_docs(nlp.vocab):
                 "POS__" + token.pos_,
                 "DEP__" + token.dep_,
                 "TAG__" + token.tag_,
+                "LEMM_" + w_lemma,
+                "count",
             ]
             for f in features:
                 # si la feature está definida y sumar uno
                 # si la feature no está definida, devolver 0 y sumar 1
                 word_feature_dict[f] = word_feature_dict.get(f, 0) + 1
-            
+
             words_feature_dict[w_lemma] = word_feature_dict
 
     word_feature_dict_progress_bar.update()
+
+# %%
+filtered_words_feature_dict = dict()
+
+for w, f in words_feature_dict.items():
+    if f["count"] > 70:
+        f.pop("count")
+        filtered_words_feature_dict[w] = f
 
 # %%
 # Crear lista con las features de cada token y
@@ -94,11 +112,11 @@ for doc in articles_doc_bin.get_docs(nlp.vocab):
 words_feature_list = []
 words_ids = {}
 wid = 0
-for word in words_feature_dict:
+for word in filtered_words_feature_dict:
     if len(word) > 0:
         words_ids[word] = wid
         wid += 1
-        words_feature_list.append(words_feature_dict[word])
+        words_feature_list.append(filtered_words_feature_dict[word])
 
 # %%
 # Utilizar DictVectorizer para crear una matriz "scipy.sparse"
@@ -145,7 +163,7 @@ fig_matrix = px.scatter(pointsspacy, x="x", y="y", hover_data=['word'])
 fig_matrix.show()
 # %%
 # Utilizamos Kmeans para crear clusters de palabras
-kmeans = KMeans(n_clusters=100).fit(red_matrix)
+kmeans = KMeans(n_clusters=4).fit(red_matrix)
 
 # %%
 # Creamos un DataFrame que contiene el token, las posiciones x e y y 
