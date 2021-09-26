@@ -32,28 +32,22 @@ pip install -r requirements.txt
 
 3. Profit.
 
-## Uso de `w_cluster.py`
+## Informe
 
-El proyecto fué creado utilizando VS Code + [Su extención de Python](https://code.visualstudio.com/docs/languages/python). Esta última permite la creación de celdas de código o markdown utilizando "`# %%`" y `# %% [markdown]` respectivamente. Podemos ver en el siguiente ejemplo cómo se utilizan cada uno:
+Nosotros decidimos trabajar sobre el dataset de LaVoz y como primer paso hicimos un análisis utilizando como feature los atriburos `POS`, `Tag` y `Dep` de los tokens dentro del cuerpo. Estas son características mayormente morfológicas de las palabras y se pueden ver ejemplos en [la documentación de spacy de linguistic features](https://spacy.io/usage/linguistic-features). Para poder generar los clusters utilizamos KMeans con 100 clusters.
 
-<img width="873" alt="imagen" src="https://user-images.githubusercontent.com/13922772/133910849-df831e64-e800-47b9-aba6-227444b6d0dd.png">
+<img width="1015" alt="imagen" src="https://user-images.githubusercontent.com/13922772/134432149-59ab1e17-2013-4987-b613-cfd7a7bb3df1.png">
 
-Y si corremos ambas celdas utilizando el botón de _"Run Cell"_, obtenemos lo siguiente en una nueva pestaña:
+Como era de esperar, los clusters formados generalmente eran un conjunto de adjetivos, verbos, sustantivos o nombres. Pero algo interesante que vimos en este paso es que el lematizador de spacy no funciona siempre como uno esperaría.
 
-<img width="883" alt="imagen" src="https://user-images.githubusercontent.com/13922772/133911031-08863fc2-af2d-434c-bff1-ded3c2fef25f.png">
+<img width="553" alt="imagen" src="https://user-images.githubusercontent.com/13922772/134432367-ba3a5f6f-2f64-434e-88e9-68985940e10b.png">
 
-Utilizamos este método ya que brinda mejor claridad al momento de trabajar con el versionado del proyecto. 
+La imagen anterior es un recorte de un cluster que contiene palabras como "Aprender", "Hojear" y "Surfear" pero también contiene otros verbos conjugados erroneamente como "Informarar", "Ocurririr" y "Extraviarar". También contiene palabras que no fueron conjugadas al infinitivo como "Alcanzamos" o "Remitiendo".
 
-## Disclaimer Sobre Lematización Con Spacy
-
-Spacy lematiza todos los articulos al masculino y como no tenemos seguridad
-que el comportamiento no se replique en otras palabras, no podemos confiar
-en género de los lemas.
-
-Aparte de esto, la lematización no funciona correctamente con algunas conjugaciones de verbos.
+Luego de algunas pruebas vimos que aparte de esto el lematizador también cambia todos los artículos al masculino, efectivamente no pasa todas las conjugaciones de los verbos al infinitivo y puede lematizar a dos palabras.
 
 ```python
-doc = nlp("el la lo las los les le un una manejaría")
+doc = nlp("el la lo las los les le un una manejaría, manejarlo")
 
 for token in doc:
     print(token.lemma_)
@@ -68,4 +62,23 @@ for token in doc:
 # uno
 # uno
 # manejaría
+# manejar el
 ```
+
+Para continuar con el análisis queríamos empezar a utilizar bigramas, trigramas e investigar la diferencia que podría hacer agregar la palabra (y/o atributos de la palabra) a la cual modifica utilizando [el atributo `head` de los tokens](https://spacy.io/usage/linguistic-features#navigating). Aparte de esto posiblemente utilizar [otro lemmatizer](https://github.com/pablodms/spacy-spanish-lemmatizer) y ver si este nos puede brindar mejores resultados.
+
+Desgraciadamente, luego de horas de dejar diferentes computadoras y un colab corriendo por mucho tiempo sin resultado nos dimos cuenta de que era imposible hacer los análisis previamente mencionados sin realizar una fuerte reducción de tokens anteriormente. Para este momento ya era muy tarde para empezar el proceso de decidir e implementar el filtro de tokens.
+
+Nuestro Jupyther funcional es `w_cluster_morph.ipynb` y `w_cluster_ctx.ipynb` contiene las pruebas donde intentamos agregar más contexto a cada token.
+
+## Uso de `w_cluster.py`
+
+El proyecto fué creado utilizando VS Code + [Su extención de Python](https://code.visualstudio.com/docs/languages/python). Esta última permite la creación de celdas de código o markdown utilizando "`# %%`" y `# %% [markdown]` respectivamente. Podemos ver en el siguiente ejemplo cómo se utilizan cada uno:
+
+<img width="873" alt="imagen" src="https://user-images.githubusercontent.com/13922772/133910849-df831e64-e800-47b9-aba6-227444b6d0dd.png">
+
+Y si corremos ambas celdas utilizando el botón de _"Run Cell"_, obtenemos lo siguiente en una nueva pestaña:
+
+<img width="883" alt="imagen" src="https://user-images.githubusercontent.com/13922772/133911031-08863fc2-af2d-434c-bff1-ded3c2fef25f.png">
+
+Utilizamos este método ya que brinda mejor claridad al momento de trabajar con el versionado del proyecto. 
