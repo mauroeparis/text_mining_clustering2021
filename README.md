@@ -32,7 +32,7 @@ pip install -r requirements.txt
 
 3. Profit.
 
-## Informe
+## Informe pt. 1
 
 Nosotros decidimos trabajar sobre el dataset de LaVoz y como primer paso hicimos un análisis utilizando como feature los atriburos `POS`, `Tag` y `Dep` de los tokens dentro del cuerpo. Estas son características mayormente morfológicas de las palabras y se pueden ver ejemplos en [la documentación de spacy de linguistic features](https://spacy.io/usage/linguistic-features). Para poder generar los clusters utilizamos KMeans con 100 clusters.
 
@@ -70,6 +70,15 @@ Para continuar con el análisis queríamos empezar a utilizar bigramas, trigrama
 Desgraciadamente, luego de horas de dejar diferentes computadoras y un colab corriendo por mucho tiempo sin resultado nos dimos cuenta de que era imposible hacer los análisis previamente mencionados sin realizar una fuerte reducción de tokens anteriormente. Para este momento ya era muy tarde para empezar el proceso de decidir e implementar el filtro de tokens.
 
 Nuestro Jupyther funcional es `w_cluster_morph.ipynb` y `w_cluster_ctx.ipynb` contiene las pruebas donde intentamos agregar más contexto a cada token.
+
+## Informe pt. 2
+
+Luego de hacer un filtro por las palabras que tenian baja frecuencia, pudimos obtener clusters más claros. Pudimos obtener 4 clusters: Sustantivos Comunes, Sustantivos propios, Adjetivos y Verbos.
+
+<img width="1025" alt="imagen" src="https://user-images.githubusercontent.com/13922772/135728723-c8f4406d-9512-45b0-b13a-888014d5edd0.png">
+
+Luego de esto probamos con sumar bigramas, trigramas y el `text.head` de cada token para brindar un poco más de contexto pero no vimos mucha mejoría en la división de los clusters.
+
 
 ## Uso de `w_cluster.py`
 
