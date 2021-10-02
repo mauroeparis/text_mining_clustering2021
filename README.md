@@ -80,7 +80,9 @@ Luego de hacer un filtro por las palabras que tenian baja frecuencia, pudimos ob
 Luego de esto probamos con sumar bigramas, trigramas y el `text.head` de cada token para brindar un poco más de contexto pero no vimos mucha mejoría en la división de los clusters.
 
 
-## Uso de `w_cluster.py`
+## Uso de Archivos `.py`
+
+> Esto es solo para desarrollo.
 
 El proyecto fué creado utilizando VS Code + [Su extención de Python](https://code.visualstudio.com/docs/languages/python). Esta última permite la creación de celdas de código o markdown utilizando "`# %%`" y `# %% [markdown]` respectivamente. Podemos ver en el siguiente ejemplo cómo se utilizan cada uno:
 
