@@ -80,6 +80,7 @@ for doc in articles_doc_bin.get_docs(nlp.vocab):
             w_lemma = token.lemma_.split(" ")[0]
             # Obtener features de la palabra o devolver un diccionario vacío
             word_feature_dict = words_feature_dict.get(w_lemma, {})
+            ent_type = token.ent_type_ or "NOENT"
 
             features = [
                 "POS__" + token.pos_,
@@ -87,6 +88,7 @@ for doc in articles_doc_bin.get_docs(nlp.vocab):
                 "TAG__" + token.tag_,
                 "LEMM_" + w_lemma,
                 "HEAD_" + token.head.lemma_.split(" ")[0],
+                "ENT__" + ent_type,
                 "count",
             ]
             for f in features:
