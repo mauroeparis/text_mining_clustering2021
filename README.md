@@ -73,7 +73,7 @@ Nuestro Jupyther funcional es `w_cluster_morph.ipynb` y `w_cluster_ctx.ipynb` co
 
 ## Informe pt. 2
 
-Luego de hacer un filtro por las palabras que tenian baja frecuencia, pudimos obtener clusters más claros. Pudimos obtener 4 clusters: Sustantivos Comunes, Sustantivos propios, Adjetivos y Verbos.
+Luego de hacer un filtro por las palabras que tenian baja frecuencia, pudimos obtener clusters más claros. Pudimos obtener 4 clusters: Sustantivos Comunes (violeta), Sustantivos propios (Azul), Adjetivos (Naranja) y Verbos (Amarillo).
 
 <img width="1025" alt="imagen" src="https://user-images.githubusercontent.com/13922772/135728723-c8f4406d-9512-45b0-b13a-888014d5edd0.png">
 
