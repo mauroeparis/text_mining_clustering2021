@@ -79,6 +79,8 @@ Luego de hacer un filtro por las palabras que tenian baja frecuencia, pudimos ob
 
 Luego de esto probamos con sumar bigramas, trigramas y el `text.head` de cada token para brindar un poco más de contexto pero no vimos mucha mejoría en la división de los clusters.
 
+Al filtrar las palabras que no eran muy frecuentes, el problema de la lematización practicamente desapareció, por lo que creo que la causa eran typos dentro del corpus y por ser poco frecuentes fueron filtrados.
+
 
 ## Uso de Archivos `.py`
 
